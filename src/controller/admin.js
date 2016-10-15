@@ -92,7 +92,7 @@ export default class extends Base {
       _.each(this.file(), o=>{
         let worksheet = xlsx.readFile(o.path,{}).Sheets;
         let sheet = _.values(worksheet)[0];
-        let list = xlsx.utils.sheet_to_json(sheet, {header:1, true});
+        let list = xlsx.utils.sheet_to_json(sheet, {header:1, raw:true});
 
         let [header, ...data] = list;
         let is_new_version = false;
