@@ -90,7 +90,7 @@ export default class extends Base {
       let { id:user_id } = await this.session('user');
       let year = moment().year();
       _.each(this.file(), o=>{
-        let worksheet = xlsx.readFile(o.path,{}).Sheets;
+        let worksheet = xlsx.readFile(o.path).Sheets;
         let sheet = _.values(worksheet)[0];
         let list = xlsx.utils.sheet_to_json(sheet, {header:1, raw:true});
 
