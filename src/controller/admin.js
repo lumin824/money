@@ -223,7 +223,7 @@ export default class extends Base {
 
   async statAction(){
     let { id:user_id } = await this.session('user');
-    let list = await this.model('loan_stage').query(`select ym,sum(lixi_1) as lixi_1,sum(lixi_2) as lixi_2,sum(benjin_1) as benjin_1,sum(benjin_2) as benjin_2 from (select x.*, date_format(from_unixtime(x.end_time),\'%Y-%m\') as ym from think_loan_stage x left join think_loan y on x.loan_id=y.id where y.user_id=${user_id}) a group by ym order by ym desc;`);
+    let list = await this.model('loan_stage').query(`select ym,sum(lixi_1) as lixi_1,sum(lixi_2) as lixi_2,sum(benjin_1) as benjin_1,sum(benjin_2) as benjin_2 from (select x.*, date_format(from_unixtime(x.end_time),\'%Y-%m\') as ym from loan_stage x left join loan y on x.loan_id=y.id where y.user_id=${user_id}) a group by ym order by ym desc;`);
     this.assign('list', list);
     return this.display();
   }
