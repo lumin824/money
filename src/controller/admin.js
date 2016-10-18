@@ -41,48 +41,60 @@ export default class extends Base {
   }
 
   async loanEditAction(){
-    let { id:user_id } = await this.session('user');
-    let { oper, ...data} = this.param();
 
-    let st;
-    if(data.start_time){
-      st = moment(data.start_time, 'YYYY-MM-DD');
-      data.start_time = st.unix();
-    }
-    if(data.end_time) data.end_time = moment(data.end_time, 'YYYY-MM-DD').unix();
+    if(this.isAjax()){
+      let { id:user_id } = await this.session('user');
+      let { oper, ...data} = this.param();
 
-    if(oper == 'add'){
-
-      let { money, total_stage, start_time } = data;
-      let m = null;
-      let stageNum = 0;
-      if(total_stage && (m = total_stage.match(/\d+/))){
-        stageNum = m[0];
+      let st;
+      if(data.start_time){
+        st = moment(data.start_time, 'YYYY-MM-DD');
+        data.start_time = st.unix();
       }
-      money = _.parseInt(money);
-      data.end_time = moment(st).add('day', 7 * stageNum).unix();
-      data.user_id = user_id;
-      let loan_id = await this.model('loan').add(data);
+      if(data.end_time) data.end_time = moment(data.end_time, 'YYYY-MM-DD').unix();
 
-      if(loan_id && stageNum > 0 && money && stageNum < 40 && st){
-        let lixi_1 = Math.floor(money / 1000 * 21);
-        let benjin_1 = Math.floor(money / stageNum);
-
-        for(let i = 0; i < stageNum; i++){
-          await this.model('loan_stage').add({
-            loan_id, stage:i+1,lixi_1,lixi_2:0,benjin_1,benjin_2:0, end_time: st.unix()
-          });
-          st.add(7,'day');
+      if(oper == 'add'){
+        if(!data.lixi_rate) data.lixi_rate = 3;
+        let { money, total_stage, start_time, lixi_rate } = data;
+        let m = null;
+        let stageNum = 0;
+        if(total_stage && (m = total_stage.match(/\d+/))){
+          stageNum = m[0];
         }
+        money = _.parseInt(money);
+        data.end_time = moment(st).add('day', 7 * stageNum).unix();
+        data.user_id = user_id;
+        let loan_id = await this.model('loan').add(data);
+
+        if(loan_id && stageNum > 0 && money && stageNum < 40 && st){
+          let lixi_1 = Math.floor(money / 1000 * 7 * lixi_rate);
+          let benjin_1 = Math.floor(money / stageNum);
+
+          for(let i = 0; i < stageNum; i++){
+            await this.model('loan_stage').add({
+              loan_id, stage:i+1,lixi_1,lixi_2:0,benjin_1,benjin_2:0, end_time: st.unix()
+            });
+            st.add(7,'day');
+          }
+        }
+      }else if(oper == 'edit'){
+        let { id, ...udata} = data;
+        await this.model('loan').where({id}).update(udata);
+      }else if(oper == 'del'){
+        let { id } = data;
+        await this.model('loan').where({id}).delete();
       }
-    }else if(oper == 'edit'){
-      let { id, ...udata} = data;
-      await this.model('loan').where({id}).update(udata);
-    }else if(oper == 'del'){
-      let { id } = data;
-      await this.model('loan').where({id}).delete();
+      return this.success({});
+    }else{
+      let { id } = this.param();
+      if(id){
+        let item = await this.model('loan').where({id}).find();
+        item.start_time = moment.unix(item.start_time).format('YYYY-MM-DD');
+        this.assign({id, item});
+      }
+      return this.display();
     }
-    return this.json({});
+
   }
 
   async uploadAction(){

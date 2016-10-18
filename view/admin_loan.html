@@ -45,16 +45,23 @@
                       <p>添加记录结束日期＝开始日期＋期数＊7天</p>
                       <p>添加记录会根据分期数和金额生成分期信息</p>
                       <p>编辑只会编辑信息，不会修改分期信息</p>
+
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/loan_edit" data-index="loan_edit">添加贷款申请</button>
+                        </div>
+                      </div>
+                      <br>
                       <div class="row">
                         <div class="col-xs-6">
                           <input id="key" type="text" placeholder="姓名、手机号、苹果id、身份证号" class="form-control ">
                         </div>
                       </div>
                       <div class="hr-line-dashed"></div>
-                        <div class="jqGrid_wrapper">
-                            <table id="table_list_2"></table>
-                            <div id="pager_list_2"></div>
-                        </div>
+                      <div class="jqGrid_wrapper">
+                          <table id="table_list_2"></table>
+                          <div id="pager_list_2"></div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -154,15 +161,16 @@
                         name: 'id',
                         formatter: function(cell, opt, row){
                           return ''
-                          +'<button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/stage?id='+cell+'" data-index="loan_'+cell+'">分期</button>'
+                          +' <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/loan_edit?id='+cell+'" data-index="loan_'+cell+'">编辑</button>'
+                          +' <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/stage?id='+cell+'" data-index="loan_'+cell+'">分期</button>'
                           +' <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/loan_file?id='+cell+'" data-index="loan_'+cell+'">文件</button>';
                         }
                     }
                 ],
                 pager: "#pager_list_2",
                 viewrecords: true,
-                add: true,
-                edit: true,
+                add: false,
+                edit: false,
                 addtext: 'Add',
                 edittext: 'Edit',
                 hidegrid: false
@@ -171,10 +179,10 @@
 
             // Setup buttons
             $("#table_list_2").jqGrid('navGrid', '#pager_list_2', {
-                edit: true,
-                add: true,
+                edit: false,
+                add: false,
                 del: true,
-                search: true
+                search: false
             }, {
                 reloadAfterSubmit: true
             });
