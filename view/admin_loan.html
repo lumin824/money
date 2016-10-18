@@ -48,7 +48,7 @@
 
                       <div class="row">
                         <div class="col-xs-6">
-                          <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/loan_edit" data-index="loan_edit">添加贷款申请</button>
+                          <button class="btn btn-primary btn-sm J_openTab" type="button" href="/admin/loan_edit" data-index="loan_edit">添加贷款申请</button>
                         </div>
                       </div>
                       <br>
@@ -107,7 +107,7 @@
                 shrinkToFit: true,
                 rowNum: 100,
                 rowList: [100, 200, 500, 1000, 2000],
-                colNames: ['序号', '开始日期', '结束日期', '手机号', '身份证号', '姓名', '金额', '分期数', '苹果账号', '备注','操作'],
+                colNames: ['序号', '开始日期', '手机号', '身份证号', '姓名', '金额', '分期数', '苹果账号', '备注','操作'],
                 colModel: [
                     {
                         name: 'id',
@@ -117,12 +117,6 @@
                     {
                         name: 'start_time',
                         editable: true,
-                        width:80,
-                        formatter:'date',
-                        formatoptions: { srcformat:'u'}
-                    },
-                    {
-                        name: 'end_time',
                         width:80,
                         formatter:'date',
                         formatoptions: { srcformat:'u'}
@@ -161,9 +155,9 @@
                         name: 'id',
                         formatter: function(cell, opt, row){
                           return ''
-                          +' <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/loan_edit?id='+cell+'" data-index="loan_'+cell+'">编辑</button>'
-                          +' <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/stage?id='+cell+'" data-index="loan_'+cell+'">分期</button>'
-                          +' <button class="btn btn-primary btn-xs J_openTab" type="button" href="/admin/loan_file?id='+cell+'" data-index="loan_'+cell+'">文件</button>';
+                          +' <button class="btn btn-primary btn-sm J_openTab" type="button" href="/admin/stage?id='+cell+'" data-index="loan_'+cell+'">分期</button>'
+                          +' <button class="btn btn-primary btn-sm J_openTab" type="button" href="/admin/loan_file?id='+cell+'" data-index="loan_'+cell+'">文件</button>'
+                          +' <button class="btn btn-primary btn-sm J_openTab" type="button" href="/admin/loan_edit?id='+cell+'" data-index="loan_'+cell+'">编辑</button>';
                         }
                     }
                 ],

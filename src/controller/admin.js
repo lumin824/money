@@ -305,12 +305,12 @@ export default class extends Base {
       if(loan_id){
         await this.model('loan').where({id:loan_id}).update({update_time:moment().unix()})
       }
-      return this.json({errno:200});
+      return this.success();
     }else{
       let {id} = this.param();
       let loan = await this.model('loan').where({id}).find();
       let list = await this.model('loan_stage').where({loan_id:id}).order({'id':'asc'}).select();
-      let update_time = loan.update_time ? moment.unix(loan.update_time).format('YYYY-MM-DD hh:mm:ss') : '无';
+      let update_time = loan.update_time ? moment.unix(loan.update_time).format('YYYY-MM-DD HH:mm:ss') : '无';
       this.assign('loan', {...loan, update_time});
       this.assign('list', _.map(list,o=>({...o,end_time:moment.unix(o.end_time).format('YYYY-MM-DD')})));
       return this.display();
