@@ -10,8 +10,7 @@ export default class extends Base {
   async __before(){
     let user = await this.session('user');
     let openid = await this.session('wechat_openid');
-    let { action, host, hostname } = this.http;
-    console.log([host,hostname]);
+    let { action, host } = this.http;
     if(!user){
       if(openid){
         if(action != 'reg'){
@@ -21,7 +20,7 @@ export default class extends Base {
       else{
         if(action != 'login'){
           let { appid } = this.config('web.wechat');
-          let redirect_uri = 'http://81dai.ngsyun.com/wechat/login';
+          let redirect_uri = `http://${host}/wechat/login`;
           let response_type = 'code';
           let scope = 'snsapi_base';
           let state = 'STATE';
