@@ -7,7 +7,7 @@ export default class extends Base {
   __before(){}
 
   async loginAction(){
-    if(this.isAjax()){
+    if(this.isPost()){
       let { username, password } = this.param();
       let user = await this.model('user').where({
         mobile:username,password
