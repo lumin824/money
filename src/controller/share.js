@@ -24,8 +24,9 @@ export default class extends Base {
       as:'b',
       join:'left',
       on:['loan_id','id']
-    }).where({'a.benjin_1':['exp', '>a.benjin_2 or a.lixi_1>a.lixi_2'], 'a.end_time':['<',now], 'b.user_id':user_id}).order('a.end_time asc').select();
-
+    }).where(`((a.benjin_1>a.benjin_2 and a.benjin=0) or (a.lixi_1>a.lixi_2 and a.lixi=0)) and a.end_time<${now} and b.user_id=${user_id}`)
+    .order('a.end_time asc').select();
+    
     list = _.map(list, o=>({...o,end_time:moment.unix(o.end_time).format('YYYY-MM-DD')}));
     let group = _.map(_.groupBy(list,'loan_id'), (o,k)=>({
       info:{
